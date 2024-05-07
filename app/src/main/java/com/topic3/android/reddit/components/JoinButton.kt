@@ -1,6 +1,5 @@
-package com.topic3.android.reddit.components
-
 import androidx.compose.animation.animateColor
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
@@ -34,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun JoinButton(onClick:(Boolean)->Unit={}){
+fun JoinButton(onClick: (Boolean) -> Unit ={} ) {
     var buttonState: JoinButtonState
             by remember { mutableStateOf(JoinButtonState.IDLE) }
 
@@ -42,18 +41,16 @@ fun JoinButton(onClick:(Boolean)->Unit={}){
 
     val transition = updateTransition(
         targetState = buttonState,
-        label = "JoinButtonTransition"
-    )
+        label = "JoinButtonTransition")
 
     val duration = 600
     val buttonBackgroundColor: Color by transition.animateColor(
-        transitionSpec = {tween(duration)},
+        transitionSpec = { tween(duration) },
         label = "Button Background Color"
-    ){
-            state ->
-        when(state){
-            JoinButtonState.IDLE->Color.Blue
-            JoinButtonState.PRESSED->Color.White
+    ) { state ->
+        when (state) {
+            JoinButtonState.IDLE -> Color.Blue
+            JoinButtonState.PRESSED -> Color.White
         }
     }
 
@@ -61,9 +58,8 @@ fun JoinButton(onClick:(Boolean)->Unit={}){
             by transition.animateDp(
                 transitionSpec = { tween(duration) },
                 label = "Button Width"
-
-            ) { state ->
-                when (state){
+            ) {state ->
+                when (state) {
                     JoinButtonState.IDLE -> 70.dp
                     JoinButtonState.PRESSED -> 32.dp
                 }
@@ -74,29 +70,25 @@ fun JoinButton(onClick:(Boolean)->Unit={}){
                 transitionSpec = { tween(duration) },
                 label = "Text Max Width"
             ) {state ->
-                when (state){
+                when (state) {
                     JoinButtonState.IDLE -> 40.dp
                     JoinButtonState.PRESSED -> 0.dp
                 }
-
             }
 
-
-    val iconAssert: ImageVector =
+    val iconAsset: ImageVector =
         if (buttonState == JoinButtonState.PRESSED)
             Icons.Default.Check else
             Icons.Default.Add
-
     val iconTintColor: Color
             by transition.animateColor(
-                transitionSpec = { tween(duration)},
+                transitionSpec = { tween(duration) },
                 label = "Icon Tint Color"
-            ){state ->
-                when (state){
+            ) {state ->
+                when (state) {
                     JoinButtonState.IDLE -> Color.White
                     JoinButtonState.PRESSED -> Color.Blue
                 }
-
             }
 
     Box(
@@ -107,21 +99,21 @@ fun JoinButton(onClick:(Boolean)->Unit={}){
             .size(width = buttonWidth, height = 24.dp)
             .clickable(onClick = {
                 buttonState =
-                    if(buttonState == JoinButtonState.IDLE) {
+                    if (buttonState == JoinButtonState.IDLE) {
                         onClick.invoke(true)
                         JoinButtonState.PRESSED
-                    }else{
+                    } else {
                         onClick.invoke(false)
                         JoinButtonState.IDLE
                     }
             }),
         contentAlignment = Alignment.Center
-    ){
-        Row(
+    ) {
+        Row (
             verticalAlignment = Alignment.CenterVertically
         ){
             Icon(
-                imageVector = iconAssert,
+                imageVector = iconAsset,
                 contentDescription = "Plus Icon",
                 tint = iconTintColor,
                 modifier = Modifier.size(16.dp)
@@ -141,12 +133,12 @@ fun JoinButton(onClick:(Boolean)->Unit={}){
     }
 }
 
-enum class JoinButtonState{
-    IDLE,PRESSED
+enum class JoinButtonState {
+    IDLE, PRESSED
 }
 
 @Preview
 @Composable
-fun JoinButtonPreview(){
-    JoinButton(onClick={})
+fun JoinButtonPreview() {
+    JoinButton(onClick = {})
 }
